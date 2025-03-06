@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculateur VRAM pour Modèles LLM</title>
+  <!-- Lien vers Tailwind CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <header class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800">Calculateur VRAM pour Modèles LLM</h1>
+      <p class="mt-2 text-lg text-gray-600">Sélectionnez votre GPU, le nombre de cartes, et le type de modèle pour voir les options adaptées.</p>
+    </header>
+    <form id="modelForm" class="bg-white p-6 rounded-lg shadow-md mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="pipeline" class="block text-sm font-medium text-gray-700">Type de modèle (pipeline_tag):</label>
+          <select id="pipeline" name="pipeline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <option value="">-- tous --</option>
+            <option value="audio-text-to-text">audio-text-to-text</option>
+            <option value="image-text-to-text">image-text-to-text</option>
+            <option value="visual-question-answering">visual-question-answering</option>
+            <option value="document-question-answering">document-question-answering</option>
+            <option value="video-text-to-text">video-text-to-text</option>
+            <option value="visual-document-retrieval">visual-document-retrieval</option>
+            <option value="any-to-any">any-to-any</option>
+            <option value="depth-estimation">depth-estimation</option>
+            <option value="image-classification">image-classification</option>
+            <option value="object-detection">object-detection</option>
+            <option value="image-segmentation">image-segmentation</option>
+            <option value="text-to-image">text-to-image</option>
+            <option value="image-to-text">image-to-text</option>
+            <option value="image-to-image">image-to-image</option>
+            <option value="image-to-video">image-to-video</option>
+            <option value="unconditional-image-generation">unconditional-image-generation</option>
+            <option value="video-classification">video-classification</option>
+            <option value="text-to-video">text-to-video</option>
+            <option value="zero-shot-image-classification">zero-shot-image-classification</option>
+            <option value="mask-generation">mask-generation</option>
+            <option value="zero-shot-object-detection">zero-shot-object-detection</option>
+            <option value="text-to-3d">text-to-3d</option>
+            <option value="image-to-3d">image-to-3d</option>
+            <option value="image-feature-extraction">image-feature-extraction</option>
+            <option value="keypoint-detection">keypoint-detection</option>
+            <option value="text-classification">text-classification</option>
+            <option value="token-classification">token-classification</option>
+            <option value="table-question-answering">table-question-answering</option>
+            <option value="question-answering">question-answering</option>
+            <option value="zero-shot-classification">zero-shot-classification</option>
+            <option value="translation">translation</option>
+            <option value="summarization">summarization</option>
+            <option value="feature-extraction">feature-extraction</option>
+            <option value="text-generation">text-generation</option>
+            <option value="text2text-generation">text2text-generation</option>
+            <option value="fill-mask">fill-mask</option>
+            <option value="sentence-similarity">sentence-similarity</option>
+            <option value="text-to-speech">text-to-speech</option>
+            <option value="text-to-audio">text-to-audio</option>
+            <option value="automatic-speech-recognition">automatic-speech-recognition</option>
+            <option value="audio-to-audio">audio-to-audio</option>
+            <option value="audio-classification">audio-classification</option>
+            <option value="voice-activity-detection">voice-activity-detection</option>
+            <option value="tabular-classification">tabular-classification</option>
+            <option value="tabular-regression">tabular-regression</option>
+            <option value="time-series-forecasting">time-series-forecasting</option>
+            <option value="reinforcement-learning">reinforcement-learning</option>
+            <option value="robotics">robotics</option>
+            <option value="graph-machine-learning">graph-machine-learning</option>
+          </select>
+        </div>
+        <div>
+          <label for="gpu" class="block text-sm font-medium text-gray-700">GPU :</label>
+          <input type="text" id="gpu" name="gpu" list="gpu-list" placeholder="Tapez le nom de votre GPU..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          <datalist id="gpu-list"></datalist>
+        </div>
+        <div>
+          <label for="gpu_count" class="block text-sm font-medium text-gray-700">Nombre de GPU :</label>
+          <input type="number" id="gpu_count" name="gpu_count" min="1" value="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        </div>
+        <div>
+          <label for="vram" class="block text-sm font-medium text-gray-700">VRAM disponible (GB):</label>
+          <select id="vram" name="vram" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></select>
+        </div>
+      </div>
+      <div class="sorting mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="sort_by" class="block text-sm font-medium text-gray-700">Trier par :</label>
+          <select id="sort_by" name="sort_by" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <option value="downloads">téléchargements</option>
+            <option value="min_file_size">taille minimale requise</option>
+          </select>
+        </div>
+        <div>
+          <label for="order" class="block text-sm font-medium text-gray-700">Ordre :</label>
+          <select id="order" name="order" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <option value="desc">descendant</option>
+            <option value="asc">ascendant</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-6 text-center">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Chercher les modèles</button>
+      </div>
+    </form>
+    <div id="results" class="mb-8"></div>
+    <div id="pagination" class="flex justify-center items-center space-x-4">
+      <button id="prevPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Précédent</button>
+      <span id="pageInfo" class="text-gray-700">Page 1</span>
+      <button id="nextPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Suivant</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg relative w-11/12 md:w-1/2">
+      <span id="modal-close" class="absolute top-2 right-4 text-2xl font-bold cursor-pointer">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    let gpuData = [];
+    let currentPage = 1;
+    const currentLimit = 20;
+    
+    // Charger les suggestions de GPU depuis /api/gpus
+    fetch("/api/gpus")
+      .then(response => response.json())
+      .then(data => {
+        gpuData = data;
+        const datalist = document.getElementById("gpu-list");
+        data.forEach(gpu => {
+          const option = document.createElement("option");
+          option.value = gpu.name;
+          datalist.appendChild(option);
+        });
+      })
+      .catch(err => console.error("Erreur lors du chargement des GPU", err));
+    
+    function updateVRAM() {
+      const gpuName = document.getElementById("gpu").value.trim();
+      const gpuCount = parseInt(document.getElementById("gpu_count").value) || 1;
+      const vramSelect = document.getElementById("vram");
+      console.log("GPU saisi:", gpuName);
+      console.log("gpuData:", gpuData);
+      
+      if (gpuName === "") {
+        vramSelect.innerHTML = "";
+        const option = document.createElement("option");
+        option.value = "0";
+        option.textContent = "0 GB";
+        vramSelect.appendChild(option);
+        return;
+      }
+      
+      const selected = gpuData.find(g => g.name && g.name.toLowerCase().includes(gpuName.toLowerCase()));
+      vramSelect.innerHTML = "";
+      
+      if (selected && selected.memory_mb) {
+        const memStr = selected.memory_mb.toString();
+        let options = [];
+        if (memStr.indexOf("-") !== -1) {
+          const parts = memStr.split("-");
+          options = parts.map(x => {
+            const val = parseFloat(x);
+            const gb = (val / 1000) * gpuCount;
+            return gb < 1 ? Math.floor(gb * 10) / 10 : Math.floor(gb);
+          });
+        } else {
+          const val = parseFloat(memStr);
+          const gb = (val / 1000) * gpuCount;
+          options.push(gb < 1 ? Math.floor(gb * 10) / 10 : Math.floor(gb));
+        }
+        options = Array.from(new Set(options)).sort((a, b) => a - b);
+        options.forEach(optVal => {
+          const option = document.createElement("option");
+          option.value = optVal;
+          option.textContent = optVal + " GB";
+          vramSelect.appendChild(option);
+        });
+        console.log("Options VRAM:", options);
+      } else {
+        vramSelect.innerHTML = "";
+      }
+    }
+    
+    document.getElementById("gpu").addEventListener("input", updateVRAM);
+    document.getElementById("gpu").addEventListener("change", updateVRAM);
+    document.getElementById("gpu_count").addEventListener("input", updateVRAM);
+    document.getElementById("gpu_count").addEventListener("change", updateVRAM);
+    
+    function fetchModels(page) {
+      const pipeline = document.getElementById("pipeline").value;
+      const vram = document.getElementById("vram").value;
+      const sort_by = document.getElementById("sort_by").value;
+      const order = document.getElementById("order").value;
+      
+      fetch(`/api/models?pipeline=${pipeline}&vram=${vram}&sort_by=${sort_by}&order=${order}&page=${page}&limit=${currentLimit}`)
+        .then(response => response.json())
+        .then(data => {
+          currentPage = data.page;
+          displayModels(data.models);
+          updatePagination(data.models.length);
+        })
+        .catch(err => {
+          console.error("Erreur lors de la récupération des modèles", err);
+        });
+    }
+    
+    function displayModels(models) {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+      if(models.length === 0) {
+        resultsDiv.innerHTML = "<p class='text-center text-gray-700'>Aucun modèle trouvé.</p>";
+      } else {
+        const container = document.createElement("div");
+        container.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
+        models.forEach(model => {
+          const modelDiv = document.createElement("div");
+          modelDiv.className = "model-card p-4 bg-white rounded-lg shadow cursor-pointer hover:shadow-lg transition";
+          const header = document.createElement("h3");
+          header.className = "text-xl font-bold text-gray-800";
+          header.textContent = model.model_id;
+          modelDiv.appendChild(header);
+          
+          const pipelineP = document.createElement("p");
+          pipelineP.className = "text-sm text-gray-600";
+          pipelineP.textContent = "Type : " + (model.pipeline_tag || "n/a");
+          modelDiv.appendChild(pipelineP);
+          
+          const minSizeGB = model.min_file_size ? (model.min_file_size / 1e9).toFixed(2) + " GB" : "N/A";
+          const vramP = document.createElement("p");
+          vramP.className = "text-sm text-gray-600";
+          vramP.textContent = "Taille minimale requise : " + minSizeGB;
+          modelDiv.appendChild(vramP);
+          
+          const downloadsP = document.createElement("p");
+          downloadsP.className = "text-sm text-gray-600";
+          downloadsP.textContent = "Téléchargements : " + model.downloads;
+          modelDiv.appendChild(downloadsP);
+          
+          modelDiv.addEventListener("click", () => openModal(model));
+          
+          container.appendChild(modelDiv);
+        });
+        resultsDiv.appendChild(container);
+      }
+    }
+    
+    function updatePagination(resultsCount) {
+      document.getElementById("pageInfo").textContent = "Page " + currentPage;
+      document.getElementById("prevPageBtn").disabled = (currentPage <= 1);
+      document.getElementById("nextPageBtn").disabled = (resultsCount < currentLimit);
+    }
+    
+    document.getElementById("prevPageBtn").addEventListener("click", () => {
+      if (currentPage > 1) fetchModels(currentPage - 1);
+    });
+    
+    document.getElementById("nextPageBtn").addEventListener("click", () => fetchModels(currentPage + 1));
+    
+    document.getElementById("modelForm").addEventListener("submit", e => {
+      e.preventDefault();
+      currentPage = 1;
+      fetchModels(currentPage);
+    });
+    
+    function openModal(model) {
+      const modal = document.getElementById("modal");
+      const modalBody = document.getElementById("modal-body");
+      modalBody.innerHTML = "";
+      
+      const header = document.createElement("h3");
+      header.className = "text-2xl font-bold mb-4";
+      header.textContent = model.model_id;
+      modalBody.appendChild(header);
+      
+      const vramP = document.createElement("p");
+      const minSizeGB = model.min_file_size ? (model.min_file_size / 1e9).toFixed(2) + " GB" : "N/A";
+      vramP.className = "text-sm text-gray-600";
+      vramP.textContent = "Taille minimale requise : " + minSizeGB;
+      modalBody.appendChild(vramP);
+      
+      const downloadsP = document.createElement("p");
+      downloadsP.className = "text-sm text-gray-600";
+      downloadsP.textContent = "Téléchargements : " + model.downloads;
+      modalBody.appendChild(downloadsP);
+      
+      const repoLink = document.createElement("a");
+      repoLink.href = "https://huggingface.co/" + model.model_id;
+      repoLink.target = "_blank";
+      repoLink.className = "repo-link inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700";
+      repoLink.textContent = "Voir sur HuggingFace";
+      modalBody.appendChild(repoLink);
+      
+      if(model.files && model.files.length > 0) {
+        const filesHeader = document.createElement("p");
+        filesHeader.className = "mt-4 font-semibold";
+        filesHeader.textContent = "Fichiers :";
+        modalBody.appendChild(filesHeader);
+        const ul = document.createElement("ul");
+        ul.className = "list-disc pl-6 text-sm text-gray-700";
+        model.files.forEach(file => {
+          const li = document.createElement("li");
+          const sizeInGB = (file.size_bytes / 1e9).toFixed(2);
+          li.textContent = `${file.filename} (${file.file_type}) - Taille : ${sizeInGB} GB`;
+          ul.appendChild(li);
+        });
+        modalBody.appendChild(ul);
+      }
+      
+      modal.classList.remove("hidden");
+    }
+    
+    document.getElementById("modal-close").addEventListener("click", () => {
+      document.getElementById("modal").classList.add("hidden");
+    });
+    
+    window.addEventListener("click", e => {
+      const modal = document.getElementById("modal");
+      if(e.target == modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
