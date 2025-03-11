@@ -24,13 +24,14 @@
   <div class="container mx-auto p-4">
     <header class="text-center mb-8">
       <h1 class="text-4xl font-bold text-gray-800">Calculateur VRAM pour Modèles LLM</h1>
-      <p class="mt-2 text-lg text-gray-600">Sélectionnez votre GPU, le nombre de cartes, et le type de modèle pour voir les options adaptées.</p>
+      <p class="mt-2 text-lg text-gray-600">
+        Sélectionnez votre GPU, le nombre de cartes, et le type de modèle pour voir les options adaptées.
+      </p>
     </header>
     <form id="modelForm" class="bg-white p-6 rounded-lg shadow-md mb-8 relative">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="pipeline" class="block text-sm font-medium text-gray-700">Type de modèle (pipeline_tag):</label>
-          <!-- Vous pouvez remplacer ce select par un composant personnalisé comme vu précédemment -->
           <select id="pipeline" name="pipeline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
             <option value="">-- tous --</option>
             <option value="audio-text-to-text">audio-text-to-text</option>
@@ -87,6 +88,7 @@
         <div class="relative">
           <label for="gpu" class="block text-sm font-medium text-gray-700">GPU :</label>
           <input type="text" id="gpu" name="gpu" placeholder="Tapez le nom de votre GPU..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          <!-- Suggestions de GPU (affichées dans une div personnalisée) -->
           <div id="gpu-suggestions" class="absolute left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden max-h-60 overflow-y-auto"></div>
         </div>
         <div>
@@ -120,14 +122,13 @@
     </form>
     <div id="results" class="mb-8"></div>
     <div id="pagination" class="flex justify-center items-center space-x-4">
-      <!-- Boutons pagination désactivés par défaut -->
       <button id="prevPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" disabled>Précédent</button>
       <span id="pageInfo" class="text-gray-700">Page 1</span>
       <button id="nextPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" disabled>Suivant</button>
     </div>
   </div>
   
-  <!-- Modal -->
+  <!-- Modal pour afficher les détails du modèle -->
   <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg relative w-11/12 md:w-1/2">
       <span id="modal-close" class="absolute top-2 right-4 text-2xl font-bold cursor-pointer">&times;</span>
@@ -304,6 +305,11 @@
     
     document.getElementById("modelForm").addEventListener("submit", e => {
       e.preventDefault();
+      const gpuInput = document.getElementById("gpu").value.trim();
+      if (gpuInput === "") {
+        alert("Veuillez remplir le champ GPU avant de lancer la recherche.");
+        return;
+      }
       currentPage = 1;
       fetchModels(currentPage);
     });
