@@ -1,6 +1,6 @@
 # OpenLLM Explorer
 
-OpenLLM Explorer is a web application developed in Flask that allows searching, filtering, and displaying open-source language models (LLM) based on various criteria (pipeline, required VRAM, number of downloads, etc.).  
+OpenLLM Explorer is a web application available on [openllmexplorer.app](openllmexplorer.app) developed in Flask that allows searching, filtering, and displaying open-source language models (LLM) based on various criteria (pipeline, required VRAM, number of downloads, etc.).  
 The models and their information are retrieved from Hugging Face.
 
 The application queries two MySQL databases:  
