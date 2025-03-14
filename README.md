@@ -1,95 +1,91 @@
 # OpenLLM Explorer
 
-OpenLLM Explorer est une application web développée en Flask qui permet de rechercher, filtrer et afficher des modèles de langage (LLM) open source en fonction de différents critères (pipeline, VRAM requise, nombre de téléchargements, etc.).  
-L’application interroge deux bases de données MySQL :
-- **huggingfacemodel** : Contient les informations sur les modèles (y compris une colonne pré-calculée `min_file_size`).
-- **gpudb** : Contient les informations sur les GPU.
+OpenLLM Explorer is a web application developed in Flask that allows searching, filtering, and displaying open-source language models (LLM) based on various criteria (pipeline, required VRAM, number of downloads, etc.).  
+The models and their information are retrieved from Hugging Face.
 
-L’interface utilisateur est conçue avec Tailwind CSS. L’application est déployée en production à l’aide de Gunicorn, avec Nginx (ou Caddy) comme reverse proxy et gestion automatique des certificats SSL.
+The application queries two MySQL databases:  
+- **huggingfacemodel**: Contains information about the models (including a pre-calculated `min_file_size` column).
+- **gpudb**: Contains information about GPUs.
 
-## Fonctionnalités
+## Features
 
-- **Recherche et filtrage de modèles**  
-  Filtre par pipeline_tag, VRAM disponible, nombre de téléchargements et taille minimale requise.
-- **Affichage détaillé**  
-  Chaque modèle est présenté sous forme de carte cliquable affichant son ID, son type (pipeline_tag), la taille minimale requise et le nombre de téléchargements. Un modal fournit plus de détails, y compris la liste des fichiers associés.
-- **Suggestions GPU**  
-  Le champ GPU propose des suggestions en temps réel à partir des données de la base `gpudb`.
-- **Optimisation des performances**  
-  Pré-calcul de la colonne `min_file_size` et indexation des colonnes critiques pour accélérer la recherche.
-- **Déploiement sécurisé**  
-  Utilisation de Gunicorn et Nginx (ou Caddy) pour la production, avec des certificats SSL gérés automatiquement.
+- **Model search and filtering**  
+  Filter by `pipeline_tag`, available VRAM, number of downloads, and minimum required size.
+- **Detailed display**  
+  Each model is presented as a clickable card displaying its ID, type (`pipeline_tag`), minimum required size, and number of downloads. A modal provides more details, including the list of associated files and a link to the HuggingFace repo.
+- **GPU suggestions**  
+  The GPU field provides real-time suggestions based on data from the `gpudb` database.
 
-## Structure du projet
+## Project Structure
 
-. ├── app.py # Application Flask principale ├── indexdb.py # Script Python pour ajouter des index sur MySQL ├── update_min_file_size.py # Script pour pré-calculer et mettre à jour min_file_size dans la table models └── templates └── index.html # Template HTML principal (utilise Tailwind CSS)
+```
+.
+├── app.py                      # Main Flask application
+├── indexdb.py                  # Python script to add indexes to MySQL
+└── templates
+    └── index.html              # Main HTML template (uses Tailwind CSS)
+```
 
-## Prérequis
+## Prerequisites
 
 - **Python 3.10+**
-- **MySQL** avec deux bases de données : `huggingfacemodel` et `gpudb`
-- Un VPS Ubuntu ou autre système compatible
-- **Virtualenv** (recommandé)
-- **Gunicorn** pour la production
-- **Nginx** ou **Caddy** comme reverse proxy
-- Un fichier `.env` pour stocker vos variables d’environnement
+- **MySQL** with two databases: `huggingfacemodel` and `gpudb`
+- **Virtualenv** (recommended)
+- A `.env` file to store environment variables
 
-## Installation et Configuration
+## Installation and Configuration
 
-### 1. Cloner le dépôt
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/votre-utilisateur/openllm-explorer.git
+git clone https://github.com/your-username/openllm-explorer.git
 cd openllm-explorer
-2. Créer et activer un environnement virtuel
-bash
-Copier
+```
+
+### 2. Create and activate a virtual environment
+
+```bash
 python -m venv venv
-source venv/bin/activate   # Sous Windows : venv\Scripts\activate
-3. Installer les dépendances
-bash
-Copier
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
-Exemple de contenu de requirements.txt :
+```
 
-nginx
-Copier
-Flask
-SQLAlchemy
-PyMySQL
-python-dotenv
-gunicorn
-4. Configurer le fichier .env
-Créez un fichier .env à la racine du projet et ajoutez-y vos variables de connexion :
+### 4. Configure the `.env` file
 
-dotenv
-Copier
-MODELS_DATABASE_URL=mysql+pymysql://user:password@127.0.0.1:3306/huggingfacemodel
-GPU_DATABASE_URL=mysql+pymysql://user:password@127.0.0.1:3306/gpudb
-5. Mettre à jour les index (optionnel)
-Pour améliorer les performances, exécutez le script d'indexation :
+Create a `.env` file in the project's root directory and add your connection variables:
 
-bash
-Copier
+```ini
+MODELS_DATABASE_URL=mysql+pymysql://user:password@ip_database:port/huggingfacemodel
+GPU_DATABASE_URL=mysql+pymysql://user:password@ip_database:port/gpudb
+```
+
+### 5. Update indexes (optional)
+
+To improve performance, run the indexing script:
+
+```bash
 python indexdb.py
-6. Mettre à jour la colonne min_file_size (optionnel)
-Si la colonne min_file_size n'est pas encore renseignée, utilisez le script suivant pour la mettre à jour :
+```
 
-bash
-Copier
-python update_min_file_size.py
-Exécution en mode développement
-Pour tester localement l’application :
+### Running in Development Mode
 
-bash
-Copier
+To test the application locally:
+
+```bash
 python app.py
-L’application sera accessible à l’adresse http://127.0.0.1:5000.
+```
 
-Licence
-Ce projet est sous licence MIT.
+The application will be accessible at [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-Contact
-Pour toute question ou contribution, veuillez ouvrir une issue sur GitHub ou contacter le mainteneur.
+## License
 
+This project is licensed under the MIT License.
 
+## Contact
+
+For any questions or contributions, please open an issue on GitHub or contact the maintainer. Or contact me on discord Razziat#4727
