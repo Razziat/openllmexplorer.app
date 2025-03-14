@@ -82,6 +82,13 @@ python app.py
 
 The application will be accessible at [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
+## Future Updates
+
+- **Expanding the GPU database**: The current GPU database is incomplete, especially for Intel graphics and lower-end GPUs found in laptops. A more comprehensive database is needed.
+- **User installation guide**: A dedicated page will be created to guide users in installing their selected model.
+- **Automated deployment version**: A deployment option will be developed that automatically selects the best model based on system specifications and installs it.
+- **Model ranking**: Models will be ranked based on the best weight-to-performance ratio to help users make informed decisions.
+
 ## License
 
 This project is licensed under the MIT License.
