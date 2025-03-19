@@ -2,10 +2,26 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
 from sqlalchemy import create_engine, text
 import os
+from flask_babel import Babel, gettext as _
 
 load_dotenv()
 
 app = Flask(__name__)
+
+# Configuration de Babel pour l'internationalisation
+app.config['BABEL_DEFAULT_LOCALE'] = 'fr'
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+
+def get_locale():
+    return request.args.get('lang') or 'fr'
+
+# Passez le sélecteur de langue directement à Babel
+babel = Babel(app, locale_selector=get_locale)
+
+# Injecter get_locale dans le contexte des templates
+@app.context_processor
+def inject_locale():
+    return dict(get_locale=get_locale)
 
 # Chaînes de connexion MySQL (définies dans le fichier .env)
 MODELS_DATABASE_URL = os.getenv("MODELS_DATABASE_URL")
@@ -45,7 +61,7 @@ def api_models():
     models_list = []
     for model in models_result:
         m_dict = dict(model)
-        # Récupération des fichiers pour l'affichage (les calculs de taille ne sont plus faits ici)
+        # Récupération des fichiers pour l'affichage
         files_result = conn.execute(
             text("SELECT model_id, filename, file_type, size_bytes FROM model_files WHERE model_id = :model_id"),
             {"model_id": m_dict["model_id"]}

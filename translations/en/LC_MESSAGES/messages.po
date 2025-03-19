@@ -1,0 +1,340 @@
+# English translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-03-18 21:29+0100\n"
+"PO-Revision-Date: 2025-03-18 21:51+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: templates/index.html:6 templates/index.html:47
+msgid "OpenLLM Explorer – Trouvez le modèle LLM adapté à votre configuration"
+msgstr "OpenLLM Explorer – Find the right LLM model for your configuration"
+
+#: templates/index.html:50
+msgid ""
+"Sélectionnez votre GPU, le nombre de cartes, et le type de modèle pour "
+"voir les options adaptées."
+msgstr ""
+"Select your GPU, the number of cards, and the model type to see "
+"suitable options."
+
+#: templates/index.html:58
+msgid "Type de modèle (pipeline_tag):"
+msgstr "Model Type (pipeline_tag)"
+
+#: templates/index.html:61
+msgid "-- tous --"
+msgstr "-- all --"
+
+#: templates/index.html:62
+msgid "audio-text-to-text"
+msgstr ""
+
+#: templates/index.html:63
+msgid "image-text-to-text"
+msgstr ""
+
+#: templates/index.html:64
+msgid "visual-question-answering"
+msgstr ""
+
+#: templates/index.html:65
+msgid "document-question-answering"
+msgstr ""
+
+#: templates/index.html:66
+msgid "video-text-to-text"
+msgstr ""
+
+#: templates/index.html:67
+msgid "visual-document-retrieval"
+msgstr ""
+
+#: templates/index.html:68
+msgid "any-to-any"
+msgstr ""
+
+#: templates/index.html:69
+msgid "depth-estimation"
+msgstr ""
+
+#: templates/index.html:70
+msgid "image-classification"
+msgstr ""
+
+#: templates/index.html:71
+msgid "object-detection"
+msgstr ""
+
+#: templates/index.html:72
+msgid "image-segmentation"
+msgstr ""
+
+#: templates/index.html:73
+msgid "text-to-image"
+msgstr ""
+
+#: templates/index.html:74
+msgid "image-to-text"
+msgstr ""
+
+#: templates/index.html:75
+msgid "image-to-image"
+msgstr ""
+
+#: templates/index.html:76
+msgid "image-to-video"
+msgstr ""
+
+#: templates/index.html:77
+msgid "unconditional-image-generation"
+msgstr ""
+
+#: templates/index.html:78
+msgid "video-classification"
+msgstr ""
+
+#: templates/index.html:79
+msgid "text-to-video"
+msgstr ""
+
+#: templates/index.html:80
+msgid "zero-shot-image-classification"
+msgstr ""
+
+#: templates/index.html:81
+msgid "mask-generation"
+msgstr ""
+
+#: templates/index.html:82
+msgid "zero-shot-object-detection"
+msgstr ""
+
+#: templates/index.html:83
+msgid "text-to-3d"
+msgstr ""
+
+#: templates/index.html:84
+msgid "image-to-3d"
+msgstr ""
+
+#: templates/index.html:85
+msgid "image-feature-extraction"
+msgstr ""
+
+#: templates/index.html:86
+msgid "keypoint-detection"
+msgstr ""
+
+#: templates/index.html:87
+msgid "text-classification"
+msgstr ""
+
+#: templates/index.html:88
+msgid "token-classification"
+msgstr ""
+
+#: templates/index.html:89
+msgid "table-question-answering"
+msgstr ""
+
+#: templates/index.html:90
+msgid "question-answering"
+msgstr ""
+
+#: templates/index.html:91
+msgid "zero-shot-classification"
+msgstr ""
+
+#: templates/index.html:92
+msgid "translation"
+msgstr ""
+
+#: templates/index.html:93
+msgid "summarization"
+msgstr ""
+
+#: templates/index.html:94
+msgid "feature-extraction"
+msgstr ""
+
+#: templates/index.html:95
+msgid "text-generation"
+msgstr ""
+
+#: templates/index.html:96
+msgid "text2text-generation"
+msgstr ""
+
+#: templates/index.html:97
+msgid "fill-mask"
+msgstr ""
+
+#: templates/index.html:98
+msgid "sentence-similarity"
+msgstr ""
+
+#: templates/index.html:99
+msgid "text-to-speech"
+msgstr ""
+
+#: templates/index.html:100
+msgid "text-to-audio"
+msgstr ""
+
+#: templates/index.html:101
+msgid "automatic-speech-recognition"
+msgstr ""
+
+#: templates/index.html:102
+msgid "audio-to-audio"
+msgstr ""
+
+#: templates/index.html:103
+msgid "audio-classification"
+msgstr ""
+
+#: templates/index.html:104
+msgid "voice-activity-detection"
+msgstr ""
+
+#: templates/index.html:105
+msgid "tabular-classification"
+msgstr ""
+
+#: templates/index.html:106
+msgid "tabular-regression"
+msgstr ""
+
+#: templates/index.html:107
+msgid "time-series-forecasting"
+msgstr ""
+
+#: templates/index.html:108
+msgid "reinforcement-learning"
+msgstr ""
+
+#: templates/index.html:109
+msgid "robotics"
+msgstr ""
+
+#: templates/index.html:110
+msgid "graph-machine-learning"
+msgstr ""
+
+#: templates/index.html:115
+msgid "GPU :"
+msgstr ""
+
+#: templates/index.html:117
+msgid "Tapez le nom de votre GPU..."
+msgstr "Enter the name of your GPU..."
+
+#: templates/index.html:122
+msgid "Nombre de GPU :"
+msgstr "Number of GPU :"
+
+#: templates/index.html:128
+msgid "VRAM disponible (GB) :"
+msgstr "Available VRAM (GB) :"
+
+#: templates/index.html:136
+msgid "Trier par :"
+msgstr "Order by :"
+
+#: templates/index.html:139
+msgid "téléchargements"
+msgstr "downloads"
+
+#: templates/index.html:140
+msgid "taille minimale requise"
+msgstr "minimum size required"
+
+#: templates/index.html:145
+msgid "Ordre :"
+msgstr "Order :"
+
+#: templates/index.html:148
+msgid "descendant"
+msgstr "descendant"
+
+#: templates/index.html:149
+msgid "ascendant"
+msgstr "ascendant"
+
+#: templates/index.html:155
+msgid "Chercher les modèles"
+msgstr "Find models"
+
+#: templates/index.html:162
+msgid "Précédent"
+msgstr "Previous"
+
+#: templates/index.html:164 templates/index.html:335
+msgid "Page"
+msgstr "Page"
+
+#: templates/index.html:166
+msgid "Suivant"
+msgstr "Next"
+
+#: templates/index.html:299
+msgid "Aucun modèle trouvé."
+msgstr "No models found"
+
+#: templates/index.html:313
+msgid "Type :"
+msgstr "Type :"
+
+#: templates/index.html:313
+msgid "n/a"
+msgstr ""
+
+#: templates/index.html:316 templates/index.html:368
+msgid "N/A"
+msgstr ""
+
+#: templates/index.html:319 templates/index.html:370
+msgid "Taille minimale requise :"
+msgstr "Minimum size required :"
+
+#: templates/index.html:324 templates/index.html:375
+msgid "Téléchargements :"
+msgstr "Downloads :"
+
+#: templates/index.html:350
+msgid "Veuillez remplir le champ GPU avant de lancer la recherche."
+msgstr "Please fill in the GPU field before starting the search."
+
+#: templates/index.html:382
+msgid "Voir sur HuggingFace"
+msgstr "See on HuggingFace"
+
+#: templates/index.html:388
+msgid "Fichiers :"
+msgstr "Files :"
+
+#: templates/index.html:395
+msgid "Taille :"
+msgstr "Size :"
+
+#: templates/index.html:420
+msgid "La langue française est déjà sélectionnée."
+msgstr ""
+
+#: templates/index.html:420
+msgid "La langue anglaise est déjà sélectionnée."
+msgstr "English language already selected."
+

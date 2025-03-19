@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ get_locale() }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Calculateur VRAM pour Modèles LLM</title>
+  <title>{{ _("OpenLLM Explorer – Trouvez le modèle LLM adapté à votre configuration") }}</title>
   <!-- Lien vers Tailwind CSS via CDN -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Favicon -->
   <link rel="icon" href="/static/flavicon.png" type="image/x-icon">
   <style>
     /* Pour la liste de suggestions GPU */
@@ -16,116 +17,152 @@
     /* Boutons pagination désactivés par défaut */
     #prevPageBtn:disabled,
     #nextPageBtn:disabled {
-      background-color: #cbd5e0 !important; /* gris (Tailwind gray-300) */
+      background-color: #cbd5e0 !important;
       cursor: not-allowed !important;
+    }
+    /* Style pour le sélecteur de langue, positionné en haut à gauche */
+    #language-selector {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      display: flex;
+      gap: 0.5rem;
     }
   </style>
 </head>
 <body class="bg-gray-100">
+  <!-- Sélecteur de langue en haut à gauche -->
+  <div id="language-selector">
+    <button id="btn-fr" class="focus:outline-none" onclick="changeLanguage('fr')">
+      <img src="/static/flags/fr.png" alt="{{ _('Français') }}" class="h-6 w-6">
+    </button>
+    <button id="btn-en" class="focus:outline-none" onclick="changeLanguage('en')">
+      <img src="/static/flags/us.png" alt="{{ _('English') }}" class="h-6 w-6">
+    </button>
+  </div>
+  
   <div class="container mx-auto p-4">
     <header class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-gray-800">Calculateur VRAM pour Modèles LLM</h1>
+      <h1 class="text-4xl font-bold text-gray-800">
+        {{ _("OpenLLM Explorer – Trouvez le modèle LLM adapté à votre configuration") }}
+      </h1>
       <p class="mt-2 text-lg text-gray-600">
-        Sélectionnez votre GPU, le nombre de cartes, et le type de modèle pour voir les options adaptées.
+        {{ _("Sélectionnez votre GPU, le nombre de cartes, et le type de modèle pour voir les options adaptées.") }}
       </p>
     </header>
+    
     <form id="modelForm" class="bg-white p-6 rounded-lg shadow-md mb-8 relative">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label for="pipeline" class="block text-sm font-medium text-gray-700">Type de modèle (pipeline_tag):</label>
+          <label for="pipeline" class="block text-sm font-medium text-gray-700">
+            {{ _("Type de modèle (pipeline_tag):") }}
+          </label>
           <select id="pipeline" name="pipeline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-            <option value="">-- tous --</option>
-            <option value="audio-text-to-text">audio-text-to-text</option>
-            <option value="image-text-to-text">image-text-to-text</option>
-            <option value="visual-question-answering">visual-question-answering</option>
-            <option value="document-question-answering">document-question-answering</option>
-            <option value="video-text-to-text">video-text-to-text</option>
-            <option value="visual-document-retrieval">visual-document-retrieval</option>
+            <option value="">{{ _("-- tous --") }}</option>
             <option value="any-to-any">any-to-any</option>
-            <option value="depth-estimation">depth-estimation</option>
-            <option value="image-classification">image-classification</option>
-            <option value="object-detection">object-detection</option>
-            <option value="image-segmentation">image-segmentation</option>
-            <option value="text-to-image">text-to-image</option>
-            <option value="image-to-text">image-to-text</option>
-            <option value="image-to-image">image-to-image</option>
-            <option value="image-to-video">image-to-video</option>
-            <option value="unconditional-image-generation">unconditional-image-generation</option>
-            <option value="video-classification">video-classification</option>
-            <option value="text-to-video">text-to-video</option>
-            <option value="zero-shot-image-classification">zero-shot-image-classification</option>
-            <option value="mask-generation">mask-generation</option>
-            <option value="zero-shot-object-detection">zero-shot-object-detection</option>
-            <option value="text-to-3d">text-to-3d</option>
-            <option value="image-to-3d">image-to-3d</option>
-            <option value="image-feature-extraction">image-feature-extraction</option>
-            <option value="keypoint-detection">keypoint-detection</option>
-            <option value="text-classification">text-classification</option>
-            <option value="token-classification">token-classification</option>
-            <option value="table-question-answering">table-question-answering</option>
-            <option value="question-answering">question-answering</option>
-            <option value="zero-shot-classification">zero-shot-classification</option>
-            <option value="translation">translation</option>
-            <option value="summarization">summarization</option>
-            <option value="feature-extraction">feature-extraction</option>
-            <option value="text-generation">text-generation</option>
-            <option value="text2text-generation">text2text-generation</option>
-            <option value="fill-mask">fill-mask</option>
-            <option value="sentence-similarity">sentence-similarity</option>
-            <option value="text-to-speech">text-to-speech</option>
-            <option value="text-to-audio">text-to-audio</option>
-            <option value="automatic-speech-recognition">automatic-speech-recognition</option>
-            <option value="audio-to-audio">audio-to-audio</option>
             <option value="audio-classification">audio-classification</option>
-            <option value="voice-activity-detection">voice-activity-detection</option>
-            <option value="tabular-classification">tabular-classification</option>
-            <option value="tabular-regression">tabular-regression</option>
-            <option value="time-series-forecasting">time-series-forecasting</option>
+            <option value="audio-text-to-text">audio-text-to-text</option>
+            <option value="audio-to-audio">audio-to-audio</option>
+            <option value="automatic-speech-recognition">automatic-speech-recognition</option>
+            <option value="depth-estimation">depth-estimation</option>
+            <option value="document-question-answering">document-question-answering</option>
+            <option value="fill-mask">fill-mask</option>
+            <option value="feature-extraction">feature-extraction</option>
+            <option value="graph-machine-learning">graph-machine-learning</option>
+            <option value="image-classification">image-classification</option>
+            <option value="image-feature-extraction">image-feature-extraction</option>
+            <option value="image-segmentation">image-segmentation</option>
+            <option value="image-text-to-text">image-text-to-text</option>
+            <option value="image-to-image">image-to-image</option>
+            <option value="image-to-text">image-to-text</option>
+            <option value="image-to-video">image-to-video</option>
+            <option value="image-to-3d">image-to-3d</option>
+            <option value="keypoint-detection">keypoint-detection</option>
+            <option value="mask-generation">mask-generation</option>
+            <option value="object-detection">object-detection</option>
+            <option value="question-answering">question-answering</option>
             <option value="reinforcement-learning">reinforcement-learning</option>
             <option value="robotics">robotics</option>
-            <option value="graph-machine-learning">graph-machine-learning</option>
-          </select>
+            <option value="sentence-similarity">sentence-similarity</option>
+            <option value="summarization">summarization</option>
+            <option value="tabular-classification">tabular-classification</option>
+            <option value="tabular-regression">tabular-regression</option>
+            <option value="text-classification">text-classification</option>
+            <option value="text-generation">text-generation</option>
+            <option value="text-to-audio">text-to-audio</option>
+            <option value="text-to-image">text-to-image</option>
+            <option value="text-to-speech">text-to-speech</option>
+            <option value="text-to-video">text-to-video</option>
+            <option value="text-to-3d">text-to-3d</option>
+            <option value="text2text-generation">text2text-generation</option>
+            <option value="token-classification">token-classification</option>
+            <option value="translation">translation</option>
+            <option value="unconditional-image-generation">unconditional-image-generation</option>
+            <option value="video-classification">video-classification</option>
+            <option value="video-text-to-text">video-text-to-text</option>
+            <option value="visual-document-retrieval">visual-document-retrieval</option>
+            <option value="visual-question-answering">visual-question-answering</option>
+            <option value="voice-activity-detection">voice-activity-detection</option>
+            <option value="zero-shot-classification">zero-shot-classification</option>
+            <option value="zero-shot-image-classification">zero-shot-image-classification</option>
+            <option value="zero-shot-object-detection">zero-shot-object-detection</option>
+          </select>          
         </div>
         <div class="relative">
-          <label for="gpu" class="block text-sm font-medium text-gray-700">GPU :</label>
-          <input type="text" id="gpu" name="gpu" placeholder="Tapez le nom de votre GPU..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-          <!-- Suggestions de GPU (affichées dans une div personnalisée) -->
+          <label for="gpu" class="block text-sm font-medium text-gray-700">
+            {{ _("GPU :") }}
+          </label>
+          <input type="text" id="gpu" name="gpu" placeholder="{{ _('Tapez le nom de votre GPU...') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           <div id="gpu-suggestions" class="absolute left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden max-h-60 overflow-y-auto"></div>
         </div>
         <div>
-          <label for="gpu_count" class="block text-sm font-medium text-gray-700">Nombre de GPU :</label>
+          <label for="gpu_count" class="block text-sm font-medium text-gray-700">
+            {{ _("Nombre de GPU :") }}
+          </label>
           <input type="number" id="gpu_count" name="gpu_count" min="1" value="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
         </div>
         <div>
-          <label for="vram" class="block text-sm font-medium text-gray-700">VRAM disponible (GB):</label>
+          <label for="vram" class="block text-sm font-medium text-gray-700">
+            {{ _("VRAM disponible (GB) :") }}
+          </label>
           <select id="vram" name="vram" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></select>
         </div>
       </div>
       <div class="sorting mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label for="sort_by" class="block text-sm font-medium text-gray-700">Trier par :</label>
+          <label for="sort_by" class="block text-sm font-medium text-gray-700">
+            {{ _("Trier par :") }}
+          </label>
           <select id="sort_by" name="sort_by" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-            <option value="downloads">téléchargements</option>
-            <option value="min_file_size">taille minimale requise</option>
+            <option value="downloads">{{ _("téléchargements") }}</option>
+            <option value="min_file_size">{{ _("taille minimale requise") }}</option>
           </select>
         </div>
         <div>
-          <label for="order" class="block text-sm font-medium text-gray-700">Ordre :</label>
+          <label for="order" class="block text-sm font-medium text-gray-700">
+            {{ _("Ordre :") }}
+          </label>
           <select id="order" name="order" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-            <option value="desc">descendant</option>
-            <option value="asc">ascendant</option>
+            <option value="desc">{{ _("descendant") }}</option>
+            <option value="asc">{{ _("ascendant") }}</option>
           </select>
         </div>
       </div>
       <div class="mt-6 text-center">
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Chercher les modèles</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          {{ _("Chercher les modèles") }}
+        </button>
       </div>
     </form>
     <div id="results" class="mb-8"></div>
     <div id="pagination" class="flex justify-center items-center space-x-4">
-      <button id="prevPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" disabled>Précédent</button>
-      <span id="pageInfo" class="text-gray-700">Page 1</span>
-      <button id="nextPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" disabled>Suivant</button>
+      <button id="prevPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" disabled>
+        {{ _("Précédent") }}
+      </button>
+      <span id="pageInfo" class="text-gray-700">{{ _("Page") }} 1</span>
+      <button id="nextPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" disabled>
+        {{ _("Suivant") }}
+      </button>
     </div>
   </div>
   
@@ -257,7 +294,7 @@
       const resultsDiv = document.getElementById("results");
       resultsDiv.innerHTML = "";
       if (models.length === 0) {
-        resultsDiv.innerHTML = "<p class='text-center text-gray-700'>Aucun modèle trouvé.</p>";
+        resultsDiv.innerHTML = "<p class='text-center text-gray-700'>{{ _('Aucun modèle trouvé.') }}</p>";
       } else {
         const container = document.createElement("div");
         container.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
@@ -271,18 +308,18 @@
           
           const pipelineP = document.createElement("p");
           pipelineP.className = "text-sm text-gray-600";
-          pipelineP.textContent = "Type : " + (model.pipeline_tag || "n/a");
+          pipelineP.textContent = "{{ _('Type :') }} " + (model.pipeline_tag || "{{ _('n/a') }}");
           modelDiv.appendChild(pipelineP);
           
-          const minSizeGB = model.min_file_size ? (model.min_file_size / 1e9).toFixed(2) + " GB" : "N/A";
+          const minSizeGB = model.min_file_size ? (model.min_file_size / 1e9).toFixed(2) + " GB" : "{{ _('N/A') }}";
           const vramP = document.createElement("p");
           vramP.className = "text-sm text-gray-600";
-          vramP.textContent = "Taille minimale requise : " + minSizeGB;
+          vramP.textContent = "{{ _('Taille minimale requise :') }} " + minSizeGB;
           modelDiv.appendChild(vramP);
           
           const downloadsP = document.createElement("p");
           downloadsP.className = "text-sm text-gray-600";
-          downloadsP.textContent = "Téléchargements : " + model.downloads;
+          downloadsP.textContent = "{{ _('Téléchargements :') }} " + model.downloads;
           modelDiv.appendChild(downloadsP);
           
           modelDiv.addEventListener("click", () => openModal(model));
@@ -293,7 +330,7 @@
     }
     
     function updatePagination(resultsCount) {
-      document.getElementById("pageInfo").textContent = "Page " + currentPage;
+      document.getElementById("pageInfo").textContent = "{{ _('Page') }} " + currentPage;
       document.getElementById("prevPageBtn").disabled = (currentPage <= 1);
       document.getElementById("nextPageBtn").disabled = (resultsCount < currentLimit);
     }
@@ -308,7 +345,7 @@
       e.preventDefault();
       const gpuInput = document.getElementById("gpu").value.trim();
       if (gpuInput === "") {
-        alert("Veuillez remplir le champ GPU avant de lancer la recherche.");
+        alert("{{ _('Veuillez remplir le champ GPU avant de lancer la recherche.') }}");
         return;
       }
       currentPage = 1;
@@ -326,34 +363,34 @@
       modalBody.appendChild(header);
       
       const vramP = document.createElement("p");
-      const minSizeGB = model.min_file_size ? (model.min_file_size / 1e9).toFixed(2) + " GB" : "N/A";
+      const minSizeGB = model.min_file_size ? (model.min_file_size / 1e9).toFixed(2) + " GB" : "{{ _('N/A') }}";
       vramP.className = "text-sm text-gray-600";
-      vramP.textContent = "Taille minimale requise : " + minSizeGB;
+      vramP.textContent = "{{ _('Taille minimale requise :') }} " + minSizeGB;
       modalBody.appendChild(vramP);
       
       const downloadsP = document.createElement("p");
       downloadsP.className = "text-sm text-gray-600";
-      downloadsP.textContent = "Téléchargements : " + model.downloads;
+      downloadsP.textContent = "{{ _('Téléchargements :') }} " + model.downloads;
       modalBody.appendChild(downloadsP);
       
       const repoLink = document.createElement("a");
       repoLink.href = "https://huggingface.co/" + model.model_id;
       repoLink.target = "_blank";
       repoLink.className = "repo-link inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700";
-      repoLink.textContent = "Voir sur HuggingFace";
+      repoLink.textContent = "{{ _('Voir sur HuggingFace') }}";
       modalBody.appendChild(repoLink);
       
       if (model.files && model.files.length > 0) {
         const filesHeader = document.createElement("p");
         filesHeader.className = "mt-4 font-semibold";
-        filesHeader.textContent = "Fichiers :";
+        filesHeader.textContent = "{{ _('Fichiers :') }}";
         modalBody.appendChild(filesHeader);
         const ul = document.createElement("ul");
         ul.className = "list-disc pl-6 text-sm text-gray-700";
         model.files.forEach(file => {
           const li = document.createElement("li");
           const sizeInGB = (file.size_bytes / 1e9).toFixed(2);
-          li.textContent = `${file.filename} (${file.file_type}) - Taille : ${sizeInGB} GB`;
+          li.textContent = `${file.filename} (${file.file_type}) - {{ _('Taille :') }} ${sizeInGB} GB`;
           ul.appendChild(li);
         });
         modalBody.appendChild(ul);
@@ -372,6 +409,18 @@
         modal.classList.add("hidden");
       }
     });
+    
+    // Fonction pour changer la langue
+    function changeLanguage(lang) {
+      const params = new URLSearchParams(window.location.search);
+      const currentLang = params.get('lang') || 'fr'; // Défaut : français
+      if (currentLang === lang) {
+        alert(lang === 'fr' ? "{{ _('La langue française est déjà sélectionnée.') }}" : "{{ _('La langue anglaise est déjà sélectionnée.') }}");
+      } else {
+        params.set('lang', lang);
+        window.location.search = params.toString();
+      }
+    }
   </script>
 </body>
 </html>
